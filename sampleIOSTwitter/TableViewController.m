@@ -10,6 +10,9 @@
 #import "STTwitter.h"
 #import "CustomCell.h"
 
+#define CONSUMER_KEY @"B21B40qN0dLnBwx9aSJKZw"
+#define CONSUMER_SECRET @"WaixSLDLZ943kDBOrA6TcDEddwaRXbPVOZ4aARxV4"
+
 @interface TableViewController ()
 
 @property (nonatomic, strong) STTwitterAPI *twitter;
@@ -34,52 +37,57 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.tweetDictionary count];
+    return [self.tweets count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    
+    if(cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    }
     
     NSDictionary *status = [self.tweets objectAtIndex:indexPath.row];
-    cell.tweetsLabel = [status valueForKey:@"text"];
-    cell.nameLabel = [status valueForKey:@"user.screen_name"];
-    cell.dateLabel = [status valueForKey:@"created_at"];
-   
-    return cell;
-}
-
-- (void)setOAuthToken:(NSString *)token oauthVerifier:(NSString *)verifier {
+    NSString *text = [status valueForKey:@"text"];
+    NSString *screenName = [status valueForKeyPath:@"user.screen_name"];
+    NSString *dateString = [status valueForKey:@"created_at"];
     
-    [_twitter postAccessTokenRequestWithPIN:verifier successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
-        NSLog(@"-- screenName: %@", screenName);
-    } errorBlock:^(NSError *error) {
-        
-        NSLog(@"-- %@", [error localizedDescription]);
-    }];
+    cell.textLabel.text = text;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@ | %@", screenName, dateString];
+    
+    return cell;
 }
 
 - (IBAction)searchButton:(id)sender
 {
     [self.view endEditing:YES];
     NSString *searchString = self.searchField.text;
-    [_twitter getSearchTweetsWithQuery:searchString successBlock:^(NSDictionary *searchMetadata, NSArray *statuses)
+    self.twitter = [STTwitterAPI twitterAPIAppOnlyWithConsumerKey:CONSUMER_KEY consumerSecret:CONSUMER_SECRET];
     {
-        NSLog(@"Tweets for search field are : %@", [searchMetadata description]);
-        self.tweetDictionary = searchMetadata;
-        self.tweets = statuses;
-        NSLog(@"jkdasjkadshjadsw : %@", statuses);
-        [self.tableView reloadData];
-    }
+        [_twitter verifyCredentialsWithSuccessBlock:^(NSString *username)
+         {
+    [_twitter getSearchTweetsWithQuery:searchString successBlock:^(NSDictionary *searchMetadata, NSArray *statuses)
+     {
+         NSLog(@"Tweets for search field are : %@", [searchMetadata description]);
+         self.tweetDictionary = searchMetadata;
+         self.tweets = statuses;
+         NSLog(@"tweets status array : %@", statuses);
+         [self.tableView reloadData];
+     }
     errorBlock:^(NSError *error)
      {
          NSLog(@"Oops! : %@", error);
      }];
-    [self.tableView reloadData];
+         } errorBlock:^(NSError *error) {
+             NSLog(@"-- error %@", error);
+         }];
+    }
 }
 
 - (IBAction)back:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 @end
