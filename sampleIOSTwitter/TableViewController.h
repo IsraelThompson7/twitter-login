@@ -17,5 +17,6 @@
 
 - (IBAction)searchButton:(id)sender;
 - (IBAction)back:(id)sender;
+- (IBAction)whatsApp:(id)sender;
 
 @end

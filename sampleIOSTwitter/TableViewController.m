@@ -44,7 +44,8 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     
-    if(cell == nil) {
+    if(cell == nil)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
     
@@ -67,27 +68,44 @@
     {
         [_twitter verifyCredentialsWithSuccessBlock:^(NSString *username)
          {
-    [_twitter getSearchTweetsWithQuery:searchString successBlock:^(NSDictionary *searchMetadata, NSArray *statuses)
-     {
-         NSLog(@"Tweets for search field are : %@", [searchMetadata description]);
-         self.tweetDictionary = searchMetadata;
-         self.tweets = statuses;
-         NSLog(@"tweets status array : %@", statuses);
-         [self.tableView reloadData];
-     }
-    errorBlock:^(NSError *error)
-     {
-         NSLog(@"Oops! : %@", error);
-     }];
-         } errorBlock:^(NSError *error) {
-             NSLog(@"-- error %@", error);
-         }];
+             [_twitter getSearchTweetsWithQuery:searchString successBlock:^(NSDictionary *searchMetadata, NSArray *statuses)
+              {
+                  NSLog(@"Tweets for search field are : %@", [searchMetadata description]);
+                  self.tweetDictionary = searchMetadata;
+                  self.tweets = statuses;
+                  NSLog(@"tweets status array : %@", statuses);
+                  [self.tableView reloadData];
+              }
+                errorBlock:^(NSError *error)
+              {
+                  NSLog(@"Oops! : %@", error);
+              }];
+        }
+        errorBlock:^(NSError *error)
+        {
+            NSLog(@"-- error %@", error);
+        }];
     }
 }
 
 - (IBAction)back:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)whatsApp:(id)sender
+{
+    NSURL *whatsappURL = [NSURL URLWithString:@"whatsapp://send?text=Hello%20World!"];
+    if ([[UIApplication sharedApplication] canOpenURL: whatsappURL])
+    {
+        [[UIApplication sharedApplication] openURL: whatsappURL];
+    }
+    else
+    {
+        NSLog(@"Oops! whatsApp not found in the device");
+        UIAlertView *error = [[UIAlertView alloc]initWithTitle:@"Information" message:@"WhatsApp not found in your device" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [error show];
+    }
 }
 
 @end
