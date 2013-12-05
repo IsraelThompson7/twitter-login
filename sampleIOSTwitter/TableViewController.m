@@ -64,27 +64,35 @@
 {
     [self.view endEditing:YES];
     NSString *searchString = self.searchField.text;
-    self.twitter = [STTwitterAPI twitterAPIAppOnlyWithConsumerKey:CONSUMER_KEY consumerSecret:CONSUMER_SECRET];
+    if (![self.searchField.text length])
     {
-        [_twitter verifyCredentialsWithSuccessBlock:^(NSString *username)
-         {
-             [_twitter getSearchTweetsWithQuery:searchString successBlock:^(NSDictionary *searchMetadata, NSArray *statuses)
-              {
-                  NSLog(@"Tweets for search field are : %@", [searchMetadata description]);
-                  self.tweetDictionary = searchMetadata;
-                  self.tweets = statuses;
-                  NSLog(@"tweets status array : %@", statuses);
-                  [self.tableView reloadData];
-              }
-                errorBlock:^(NSError *error)
-              {
-                  NSLog(@"Oops! : %@", error);
-              }];
-        }
-        errorBlock:^(NSError *error)
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Oops!" message:@"Please enter some keywords for searching tweets" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        self.twitter = [STTwitterAPI twitterAPIAppOnlyWithConsumerKey:CONSUMER_KEY consumerSecret:CONSUMER_SECRET];
         {
-            NSLog(@"-- error %@", error);
-        }];
+            [_twitter verifyCredentialsWithSuccessBlock:^(NSString *username)
+             {
+                 [_twitter getSearchTweetsWithQuery:searchString successBlock:^(NSDictionary *searchMetadata, NSArray *statuses)
+                  {
+                      NSLog(@"Tweets for search field are : %@", [searchMetadata description]);
+                      self.tweetDictionary = searchMetadata;
+                      self.tweets = statuses;
+                      NSLog(@"tweets status array : %@", statuses);
+                      [self.tableView reloadData];
+                  }
+                    errorBlock:^(NSError *error)
+                  {
+                      NSLog(@"Oops! : %@", error);
+                  }];
+             }
+                    errorBlock:^(NSError *error)
+             {
+                 NSLog(@"-- error %@", error);
+             }];
+        }
     }
 }
 
