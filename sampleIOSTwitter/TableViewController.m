@@ -9,6 +9,7 @@
 #import "TableViewController.h"
 #import "STTwitter.h"
 #import "CustomCell.h"
+#import "ContentViewController.h"
 
 #define CONSUMER_KEY @"B21B40qN0dLnBwx9aSJKZw"
 #define CONSUMER_SECRET @"WaixSLDLZ943kDBOrA6TcDEddwaRXbPVOZ4aARxV4"
@@ -53,11 +54,28 @@
     NSString *text = [status valueForKey:@"text"];
     NSString *screenName = [status valueForKeyPath:@"user.screen_name"];
     NSString *dateString = [status valueForKey:@"created_at"];
-    
+   
     cell.textLabel.text = text;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@ | %@", screenName, dateString];
-    
+        
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *status = [self.tweets objectAtIndex:indexPath.row];
+    NSString *text = [status valueForKey:@"text"];
+    NSString *screenName = [status valueForKeyPath:@"user.screen_name"];
+    NSString *dateString = [status valueForKey:@"created_at"];
+    NSString * storyboardName = @"Main";
+    NSString * viewControllerID = @"ContentViewController";
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    ContentViewController * controller = (ContentViewController *)[storyboard instantiateViewControllerWithIdentifier:viewControllerID];
+    controller.tweetString = text;
+    controller.name = screenName;
+    controller.date = dateString;
+    [self presentViewController:controller animated:YES completion:NULL];
+
 }
 
 - (IBAction)searchButton:(id)sender

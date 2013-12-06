@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TableViewController  : UIViewController <UITableViewDataSource>
+@interface TableViewController  : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *tweets;
 @property (nonatomic, strong) NSDictionary *tweetDictionary;
