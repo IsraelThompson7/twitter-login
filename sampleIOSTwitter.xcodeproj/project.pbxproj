@@ -34,6 +34,7 @@
 		187A2984184F13F4005C0409 /* STHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A2979184F13F4005C0409 /* STHTTPRequest.m */; };
 		187A2987184F3F5F005C0409 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A2986184F3F5F005C0409 /* TableViewController.m */; };
 		187A298A184F3F79005C0409 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A2989184F3F79005C0409 /* CustomCell.m */; };
+		18C680521851A3EB005E818C /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C680511851A3EB005E818C /* ContentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,8 @@
 		187A2986184F3F5F005C0409 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		187A2988184F3F79005C0409 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
 		187A2989184F3F79005C0409 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
+		18C680501851A3EB005E818C /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
+		18C680511851A3EB005E818C /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +164,8 @@
 				187A2941184F13BC005C0409 /* ViewController.m */,
 				187A2985184F3F5F005C0409 /* TableViewController.h */,
 				187A2986184F3F5F005C0409 /* TableViewController.m */,
+				18C680501851A3EB005E818C /* ContentViewController.h */,
+				18C680511851A3EB005E818C /* ContentViewController.m */,
 				187A2988184F3F79005C0409 /* CustomCell.h */,
 				187A2989184F3F79005C0409 /* CustomCell.m */,
 				187A2943184F13BC005C0409 /* Images.xcassets */,
@@ -348,6 +353,7 @@
 				187A297F184F13F4005C0409 /* STTwitterHTML.m in Sources */,
 				187A297C184F13F4005C0409 /* STHTTPRequest+STTwitter.m in Sources */,
 				187A297D184F13F4005C0409 /* STTwitterAPI.m in Sources */,
+				18C680521851A3EB005E818C /* ContentViewController.m in Sources */,
 				187A2987184F3F5F005C0409 /* TableViewController.m in Sources */,
 				187A2983184F13F4005C0409 /* JSONSyntaxHighlight.m in Sources */,
 			);
@@ -560,6 +566,7 @@
 				187A295C184F13BC005C0409 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		187A295D184F13BC005C0409 /* Build configuration list for PBXNativeTarget "sampleIOSTwitterTests" */ = {
 			isa = XCConfigurationList;
@@ -568,6 +575,7 @@
 				187A295F184F13BC005C0409 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
