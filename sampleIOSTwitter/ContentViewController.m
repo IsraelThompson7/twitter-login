@@ -41,4 +41,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)test:(id)sender {
+}
+
 @end

@@ -10,6 +10,8 @@
 #import "STTwitter.h"
 #import "CustomCell.h"
 #import "ContentViewController.h"
+#import <Social/Social.h>
+#import <Accounts/Accounts.h>
 
 #define CONSUMER_KEY @"B21B40qN0dLnBwx9aSJKZw"
 #define CONSUMER_SECRET @"WaixSLDLZ943kDBOrA6TcDEddwaRXbPVOZ4aARxV4"
@@ -17,6 +19,7 @@
 @interface TableViewController ()
 
 @property (nonatomic, strong) STTwitterAPI *twitter;
+@property (nonatomic) ACAccountStore *accountStore;
 
 @end
 
@@ -132,6 +135,86 @@
         UIAlertView *error = [[UIAlertView alloc]initWithTitle:@"Information" message:@"WhatsApp not found in your device" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [error show];
     }
+}
+
+- (IBAction)test:(id)sender
+{
+    //  Step 0: Check that the user has local Twitter accounts
+    if ([self userHasAccessToTwitter])
+    {
+        //  Step 1:  Obtain access to the user's Twitter accounts
+        ACAccountType *twitterAccountType =
+        [self.accountStore accountTypeWithAccountTypeIdentifier:
+         ACAccountTypeIdentifierTwitter];
+        
+        [self.accountStore
+         requestAccessToAccountsWithType:twitterAccountType
+         options:NULL
+         completion:^(BOOL granted, NSError *error) {
+             if (granted)
+             {
+                 //  Step 2:  Create a request
+                 NSArray *twitterAccounts =
+                 [self.accountStore accountsWithAccountType:twitterAccountType];
+                 NSURL *url = [NSURL URLWithString:@"https://api.twitter.com"
+                               @"/1.1/statuses/user_timeline.json"];
+                 NSDictionary *params = @{@"screen_name" : @"@dobakurMan",
+                                          @"include_rts" : @"0",
+                                          @"trim_user" : @"1",
+                                          @"count" : @"1"};
+                 SLRequest *request =
+                 [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                    requestMethod:SLRequestMethodGET
+                                              URL:url
+                                       parameters:params];
+                 
+                 //  Attach an account to the request
+                 [request setAccount:[twitterAccounts lastObject]];
+                 
+                 //  Step 3:  Execute the request
+                 [request performRequestWithHandler:
+                  ^(NSData *responseData,
+                    NSHTTPURLResponse *urlResponse,
+                    NSError *error)
+                  {
+                      
+                      if (responseData)
+                      {
+                          if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300)
+                          {
+                              NSError *jsonError;
+                              NSDictionary *timelineData =[NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&jsonError];
+                              if (timelineData)
+                              {
+                                  NSLog(@"Timeline Response: %@\n", timelineData);
+                              }
+                              else
+                              {
+                                  // Our JSON deserialization went awry
+                                  NSLog(@"JSON Error: %@", [jsonError localizedDescription]);
+                              }
+                          }
+                          else
+                          {
+                              // The server did not respond ... were we rate-limited?
+                              NSLog(@"The response status code is %d", urlResponse.statusCode);
+                          }
+                      }
+                  }];
+             }
+             else
+             {
+                 // Access was not granted, or an error occurred
+                 NSLog(@"%@", [error localizedDescription]);
+             }
+         }];
+    }
+    NSLog(@"dskfklsdfkd");
+}
+
+- (BOOL)userHasAccessToTwitter
+{
+    return [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter];
 }
 
 @end

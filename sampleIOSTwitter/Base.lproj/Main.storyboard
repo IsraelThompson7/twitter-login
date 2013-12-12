@@ -139,6 +139,17 @@
                                     <action selector="whatsApp:" destination="EfI-xd-M1G" eventType="touchUpInside" id="NrJ-cP-J98"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZjH-do-708">
+                                <rect key="frame" x="106" y="20" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="test:" destination="Uwr-Gl-WyW" eventType="touchUpInside" id="8nQ-tj-X0j"/>
+                                    <action selector="test:" destination="EfI-xd-M1G" eventType="touchUpInside" id="A83-f3-XMo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
